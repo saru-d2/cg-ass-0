@@ -1,7 +1,7 @@
 #include "main.h"
 #include "timer.h"
-#include "ball.h"
 #include "hex_di_pyrid.h"
+#include "penta_anti_prism.h"
 
 using namespace std;
 
@@ -9,12 +9,15 @@ GLMatrices Matrices;
 GLuint programID;
 GLFWwindow *window;
 
+int ch;
 /**************************
 * Customizable functions *
 **************************/
 
 // Ball ball1;
 Hex_Di_Pyrid hex_di_pyrid1;
+Penta_anti_Prism penta_anti_prism1;
+// Penta_Anti_Prism
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
@@ -55,24 +58,60 @@ void draw()
 
     // Scene render
     // ball1.draw(VP);
-    hex_di_pyrid1.draw(VP);
+    if (ch == 1)
+        hex_di_pyrid1.draw(VP);
+    if (ch == 2)
+        penta_anti_prism1.draw(VP);
 }
 
 void tick_input(GLFWwindow *window)
 {
     int left = glfwGetKey(window, GLFW_KEY_LEFT);
     int right = glfwGetKey(window, GLFW_KEY_RIGHT);
-    if (left)
+    int up = glfwGetKey(window, GLFW_KEY_UP);
+    int down = glfwGetKey(window, GLFW_KEY_DOWN);
+    int dot = glfwGetKey(window, GLFW_KEY_PERIOD);
+    int slash = glfwGetKey(window, GLFW_KEY_SLASH);
+    if (ch == 1)
     {
-        // Do something
+        if (left)
+            hex_di_pyrid1.rotatX += 1;
+        if (right)
+            hex_di_pyrid1.rotatX -= 1;
+        if (up)
+            hex_di_pyrid1.rotatY += 1;
+        if (down)
+            hex_di_pyrid1.rotatY -= 1;
+        if (dot)
+            hex_di_pyrid1.rotatZ += 1;
+        if (slash)
+            hex_di_pyrid1.rotatZ -= 1;
+    }
+    if (ch == 2)
+    {
+        if (left)
+            penta_anti_prism1.rotatX += 1;
+        if (right)
+            penta_anti_prism1.rotatX -= 1;
+        if (up)
+            penta_anti_prism1.rotatY += 1;
+        if (down)
+            penta_anti_prism1.rotatY -= 1;
+        if (dot)
+            penta_anti_prism1.rotatZ += 1;
+        if (slash)
+            penta_anti_prism1.rotatZ -= 1;
     }
 }
 
 void tick_elements()
 {
     // ball1.tick();
-    hex_di_pyrid1.tick();
-    camera_rotation_angle += 1;
+    if (ch == 1)
+        hex_di_pyrid1.tick();
+    if (ch == 2)
+        penta_anti_prism1.tick();
+    // camera_rotation_angle += 1;
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -81,20 +120,11 @@ void initGL(GLFWwindow *window, int width, int height)
 {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
-
-    color_t colors[] = {COLOR_BLACK, COLOR_RED, COLOR_GREEN};
-
-    GLfloat colorBuffer[12 * 3 * 3];
-
-    for (int i = 0; i < 12 * 3; i++)
-    {
-            colorBuffer[3*i + 0] = (float)colors[i % 3].r/255.0;
-            colorBuffer[3*i + 1] = (float)colors[i % 3].g/255.0;
-            colorBuffer[3*i + 2] = (float)colors[i % 3].b/255.0;
-    }
-
     // ball1 = Ball(0, 0, colorBuffer);
-    hex_di_pyrid1 = Hex_Di_Pyrid(0, 0);
+    if (ch == 1)
+        hex_di_pyrid1 = Hex_Di_Pyrid(0, 0);
+    if (ch == 2)
+        penta_anti_prism1 = Penta_anti_Prism(0, 0);
 
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders("../source/shaders/vert.glsl", "../source/shaders/frag.glsl");
@@ -118,6 +148,9 @@ void initGL(GLFWwindow *window, int width, int height)
 
 int main(int argc, char **argv)
 {
+    cout << "1: hexa Bi.. 2: Penta anti" << endl;
+    cin >> ch;
+    cout << ch << endl;
     srand(time(0));
     int width = 600;
     int height = 600;

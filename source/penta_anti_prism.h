@@ -1,13 +1,13 @@
 #include "main.h"
 
-#ifndef HEX_DI_PYRID_H
-#define HEX_DI_PYRID_H
+#ifndef PENTA_ANTI_PRISM_H
+#define PENTA_ANTI_PRISM_H
 
 
-class Hex_Di_Pyrid {
+class Penta_anti_Prism {
 public:
-    Hex_Di_Pyrid() {}
-    Hex_Di_Pyrid(float x, float y);
+    Penta_anti_Prism() {}
+    Penta_anti_Prism(float x, float y);
     glm::vec3 position;
     float rotation;
     float rotatY;

@@ -1,7 +1,7 @@
 #include "ball.h"
 #include "main.h"
 
-Ball::Ball(float x, float y, color_t color) {
+Ball::Ball(float x, float y, GLfloat* colorBuffer) {
     this->position = glm::vec3(x, y, 0);
     this->rotation = 0;
     speed = 1;
@@ -46,7 +46,7 @@ Ball::Ball(float x, float y, color_t color) {
         1.0f,-1.0f, 1.0f
     };
 
-    this->object = create3DObject(GL_TRIANGLES, 12*3, vertex_buffer_data, color, GL_FILL);
+    this->object = create3DObject(GL_TRIANGLES, 12*3, vertex_buffer_data, colorBuffer, GL_FILL);
 }
 
 void Ball::draw(glm::mat4 VP) {

@@ -1,13 +1,13 @@
 #include "main.h"
 
-#ifndef BALL_H
-#define BALL_H
+#ifndef HEX_DI_PYRID_H
+#define HEX_DI_PYRID_H
 
 
-class Ball {
+class Hex_Di_Pyrid {
 public:
-    Ball() {}
-    Ball(float x, float y, GLfloat * colorBuffer);
+    Hex_Di_Pyrid() {}
+    Hex_Di_Pyrid(float x, float y);
     glm::vec3 position;
     float rotation;
     void draw(glm::mat4 VP);

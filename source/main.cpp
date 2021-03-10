@@ -1,24 +1,25 @@
 #include "main.h"
 #include "timer.h"
 #include "ball.h"
+#include "hex_di_pyrid.h"
 
 using namespace std;
 
 GLMatrices Matrices;
-GLuint  programID;
+GLuint programID;
 GLFWwindow *window;
 
 /**************************
 * Customizable functions *
 **************************/
 
-Ball ball1;
+// Ball ball1;
+Hex_Di_Pyrid hex_di_pyrid1;
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
 
 Timer t60(1.0 / 60);
-
 
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -53,7 +54,8 @@ void draw()
     glm::mat4 MVP; // MVP = Projection * View * Model
 
     // Scene render
-    ball1.draw(VP);
+    // ball1.draw(VP);
+    hex_di_pyrid1.draw(VP);
 }
 
 void tick_input(GLFWwindow *window)
@@ -68,7 +70,8 @@ void tick_input(GLFWwindow *window)
 
 void tick_elements()
 {
-    ball1.tick();
+    // ball1.tick();
+    hex_di_pyrid1.tick();
     camera_rotation_angle += 1;
 }
 
@@ -79,10 +82,22 @@ void initGL(GLFWwindow *window, int width, int height)
     /* Objects should be created before any other gl function and shaders */
     // Create the models
 
-    ball1 = Ball(0, 0, COLOR_RED);
+    color_t colors[] = {COLOR_BLACK, COLOR_RED, COLOR_GREEN};
+
+    GLfloat colorBuffer[12 * 3 * 3];
+
+    for (int i = 0; i < 12 * 3; i++)
+    {
+            colorBuffer[3*i + 0] = (float)colors[i % 3].r/255.0;
+            colorBuffer[3*i + 1] = (float)colors[i % 3].g/255.0;
+            colorBuffer[3*i + 2] = (float)colors[i % 3].b/255.0;
+    }
+
+    // ball1 = Ball(0, 0, colorBuffer);
+    hex_di_pyrid1 = Hex_Di_Pyrid(0, 0);
 
     // Create and compile our GLSL program from the shaders
-    programID = LoadShaders("../source/shaders/shader.vert", "../source/shaders/shader.frag");
+    programID = LoadShaders("../source/shaders/vert.glsl", "../source/shaders/frag.glsl");
     // Get a handle for our "MVP" uniform
     Matrices.MatrixID = glGetUniformLocation(programID, "MVP");
 
@@ -107,7 +122,7 @@ int main(int argc, char **argv)
     int width = 600;
     int height = 600;
 
-    std::cout<<"hello"<<endl;
+    std::cout << "hello" << endl;
 
     window = initGLFW(width, height);
 

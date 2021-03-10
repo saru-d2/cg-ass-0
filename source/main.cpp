@@ -2,6 +2,7 @@
 #include "timer.h"
 #include "hex_di_pyrid.h"
 #include "penta_anti_prism.h"
+#include "elon_sq_pyrid.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ int ch;
 // Ball ball1;
 Hex_Di_Pyrid hex_di_pyrid1;
 Penta_anti_Prism penta_anti_prism1;
+Elon_Sq_Pyrid elon_sq_pyrid1;
 // Penta_Anti_Prism
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
@@ -62,6 +64,8 @@ void draw()
         hex_di_pyrid1.draw(VP);
     if (ch == 2)
         penta_anti_prism1.draw(VP);
+    if (ch == 3)
+        elon_sq_pyrid1.draw(VP);
 }
 
 void tick_input(GLFWwindow *window)
@@ -72,6 +76,12 @@ void tick_input(GLFWwindow *window)
     int down = glfwGetKey(window, GLFW_KEY_DOWN);
     int dot = glfwGetKey(window, GLFW_KEY_PERIOD);
     int slash = glfwGetKey(window, GLFW_KEY_SLASH);
+    int w = glfwGetKey(window, GLFW_KEY_W);
+    int a = glfwGetKey(window, GLFW_KEY_A);
+    int s = glfwGetKey(window, GLFW_KEY_S);
+    int d = glfwGetKey(window, GLFW_KEY_D);
+    int e = glfwGetKey(window, GLFW_KEY_E);
+    int r = glfwGetKey(window, GLFW_KEY_R);
     if (ch == 1)
     {
         if (left)
@@ -102,6 +112,33 @@ void tick_input(GLFWwindow *window)
         if (slash)
             penta_anti_prism1.rotatZ -= 1;
     }
+    if (ch == 3)
+    {
+        if (left)
+            elon_sq_pyrid1.rotatX += 1;
+        if (right)
+            elon_sq_pyrid1.rotatX -= 1;
+        if (up)
+            elon_sq_pyrid1.rotatY += 1;
+        if (down)
+            elon_sq_pyrid1.rotatY -= 1;
+        if (dot)
+            elon_sq_pyrid1.rotatZ += 1;
+        if (slash)
+            elon_sq_pyrid1.rotatZ -= 1;
+        if (w)
+            elon_sq_pyrid1.posY += 0.1;
+        if (s)
+            elon_sq_pyrid1.posY -= 0.1;
+        if (a)
+            elon_sq_pyrid1.posZ += 0.1;
+        if (d)
+            elon_sq_pyrid1.posZ -= 0.1;
+        if (e)
+            elon_sq_pyrid1.posX += 0.1;
+        if (r)
+            elon_sq_pyrid1.posX -= 0.1;
+    }
 }
 
 void tick_elements()
@@ -111,6 +148,8 @@ void tick_elements()
         hex_di_pyrid1.tick();
     if (ch == 2)
         penta_anti_prism1.tick();
+    if (ch == 3)
+        elon_sq_pyrid1.tick();
     // camera_rotation_angle += 1;
 }
 
@@ -125,6 +164,8 @@ void initGL(GLFWwindow *window, int width, int height)
         hex_di_pyrid1 = Hex_Di_Pyrid(0, 0);
     if (ch == 2)
         penta_anti_prism1 = Penta_anti_Prism(0, 0);
+    if (ch == 3)
+        elon_sq_pyrid1 = Elon_Sq_Pyrid(0, 0);
 
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders("../source/shaders/vert.glsl", "../source/shaders/frag.glsl");
@@ -148,7 +189,7 @@ void initGL(GLFWwindow *window, int width, int height)
 
 int main(int argc, char **argv)
 {
-    cout << "1: hexa Bi.. 2: Penta anti" << endl;
+    cout << "1: hexa Bi.. 2: Penta anti.. 3: Elon Sq Pyr" << endl;
     cin >> ch;
     cout << ch << endl;
     srand(time(0));

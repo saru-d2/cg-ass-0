@@ -1,8 +1,9 @@
 #include "main.h"
 #include "timer.h"
-#include "hex_di_pyrid.h"
-#include "penta_anti_prism.h"
-#include "elon_sq_pyrid.h"
+// #include "hex_di_pyrid.h"
+// #include "penta_anti_prism.h"
+// #include "elon_sq_pyrid.h"
+#include "shape.h"
 
 using namespace std;
 
@@ -10,16 +11,47 @@ GLMatrices Matrices;
 GLuint programID;
 GLFWwindow *window;
 
+float cameraX = -5;
+float cameraY = 0;
+float cameraZ = 0;
+
+float cameraLookX = 5;
+float cameraLookY = 0;
+float cameraLookZ = 0;
+glm::vec3 cameraUp(0, 1, 0);
+
 int ch;
 /**************************
 * Customizable functions *
 **************************/
 
 // Ball ball1;
-Hex_Di_Pyrid hex_di_pyrid1;
-Penta_anti_Prism penta_anti_prism1;
-Elon_Sq_Pyrid elon_sq_pyrid1;
+Shape shape1;
 // Penta_Anti_Prism
+// int cntr = 0;
+void rotateCameraAboutObject(float rotatAdd)
+{
+    // cntr++;
+    // float currAngle = atan( (shape1.posY - cameraY) / (shape1.posX - cameraX));
+    // currAngle += rotatAdd;
+    // float currDistAlongXY = sqrt(pow(shape1.posX - cameraX, 2) + pow(shape1.posY - cameraY, 2));
+    // cameraX = currDistAlongXY * cos(currAngle);
+    // cameraY = currDistAlongXY * sin(currAngle);
+    // if (currAngle >= M_PI) cameraX *= -1;
+    // if (currAngle >= M_PI) cameraY *= -1;
+    glm::vec3 look(shape1.posX - cameraX, shape1.posY - cameraY, shape1.posZ - cameraZ);
+    glm::vec3 direction = glm::normalize(glm::cross(look, cameraUp));
+    cameraX += direction[0] * rotatAdd;
+    cameraY += direction[1] * rotatAdd;
+    cameraZ += direction[2] * rotatAdd;
+    cameraLookX = shape1.posX - cameraX;
+    cameraLookY = shape1.posY - cameraY;
+    cameraLookZ = shape1.posZ - cameraZ;
+    // std::cout << currAngle << ',' << std::endl;
+
+    std::cout << cameraLookX << "," << cameraLookY << "," << cameraLookZ << std::endl;
+    std::cout << cameraX << "," << cameraY << "," << cameraZ << std::endl;
+}
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
@@ -38,14 +70,16 @@ void draw()
     glUseProgram(programID);
 
     // Eye - Location of camera. Don't change unless you are sure!!
-    glm::vec3 eye(5 * cos(camera_rotation_angle * M_PI / 180.0f), 0, 5 * sin(camera_rotation_angle * M_PI / 180.0f));
+    glm::vec3 eye(cameraX, cameraY, cameraZ);
     // Target - Where is the camera looking at.  Don't change unless you are sure!!
     glm::vec3 target(0, 0, 0);
+
     // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
     glm::vec3 up(0, 1, 0);
 
     // Compute Camera matrix (view)
-    Matrices.view = glm::lookAt(eye, target, up); // Rotating Camera for 3D
+    Matrices.view = glm::lookAt(eye, eye + glm::vec3(cameraLookX, cameraLookY, cameraLookZ), up); // Rotating Camera for 3D
+    // Matrices.view = glm::lookAt(eye, target, up); // Rotating Camera for 3D
     // Don't change unless you are sure!!
     // Matrices.view = glm::lookAt(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); // Fixed camera for 2D (ortho) in XY plane
 
@@ -60,12 +94,7 @@ void draw()
 
     // Scene render
     // ball1.draw(VP);
-    if (ch == 1)
-        hex_di_pyrid1.draw(VP);
-    if (ch == 2)
-        penta_anti_prism1.draw(VP);
-    if (ch == 3)
-        elon_sq_pyrid1.draw(VP);
+    shape1.draw(VP);
 }
 
 void tick_input(GLFWwindow *window)
@@ -82,74 +111,61 @@ void tick_input(GLFWwindow *window)
     int d = glfwGetKey(window, GLFW_KEY_D);
     int e = glfwGetKey(window, GLFW_KEY_E);
     int r = glfwGetKey(window, GLFW_KEY_R);
-    if (ch == 1)
-    {
-        if (left)
-            hex_di_pyrid1.rotatX += 1;
-        if (right)
-            hex_di_pyrid1.rotatX -= 1;
-        if (up)
-            hex_di_pyrid1.rotatY += 1;
-        if (down)
-            hex_di_pyrid1.rotatY -= 1;
-        if (dot)
-            hex_di_pyrid1.rotatZ += 1;
-        if (slash)
-            hex_di_pyrid1.rotatZ -= 1;
-    }
-    if (ch == 2)
-    {
-        if (left)
-            penta_anti_prism1.rotatX += 1;
-        if (right)
-            penta_anti_prism1.rotatX -= 1;
-        if (up)
-            penta_anti_prism1.rotatY += 1;
-        if (down)
-            penta_anti_prism1.rotatY -= 1;
-        if (dot)
-            penta_anti_prism1.rotatZ += 1;
-        if (slash)
-            penta_anti_prism1.rotatZ -= 1;
-    }
-    if (ch == 3)
-    {
-        if (left)
-            elon_sq_pyrid1.rotatX += 1;
-        if (right)
-            elon_sq_pyrid1.rotatX -= 1;
-        if (up)
-            elon_sq_pyrid1.rotatY += 1;
-        if (down)
-            elon_sq_pyrid1.rotatY -= 1;
-        if (dot)
-            elon_sq_pyrid1.rotatZ += 1;
-        if (slash)
-            elon_sq_pyrid1.rotatZ -= 1;
-        if (w)
-            elon_sq_pyrid1.posY += 0.1;
-        if (s)
-            elon_sq_pyrid1.posY -= 0.1;
-        if (a)
-            elon_sq_pyrid1.posZ += 0.1;
-        if (d)
-            elon_sq_pyrid1.posZ -= 0.1;
-        if (e)
-            elon_sq_pyrid1.posX += 0.1;
-        if (r)
-            elon_sq_pyrid1.posX -= 0.1;
-    }
+    int h = glfwGetKey(window, GLFW_KEY_H);
+    int j = glfwGetKey(window, GLFW_KEY_J);
+    int k = glfwGetKey(window, GLFW_KEY_K);
+    int l = glfwGetKey(window, GLFW_KEY_L);
+    int n = glfwGetKey(window, GLFW_KEY_N);
+    int m = glfwGetKey(window, GLFW_KEY_M);
+    int u = glfwGetKey(window, GLFW_KEY_U);
+    int i = glfwGetKey(window, GLFW_KEY_I);
+
+    if (left)
+        shape1.rotatX += 1;
+    if (right)
+        shape1.rotatX -= 1;
+    if (up)
+        shape1.rotatY += 1;
+    if (down)
+        shape1.rotatY -= 1;
+    if (dot)
+        shape1.rotatZ += 1;
+    if (slash)
+        shape1.rotatZ -= 1;
+    if (w)
+        shape1.posY += 0.1;
+    if (s)
+        shape1.posY -= 0.1;
+    if (a)
+        shape1.posZ += 0.1;
+    if (d)
+        shape1.posZ -= 0.1;
+    if (e)
+        shape1.posX += 0.1;
+    if (r)
+        shape1.posX -= 0.1;
+    if (h)
+        cameraX += 0.1;
+    if (j)
+        cameraX -= 0.1;
+    if (k)
+        cameraY += 0.1;
+    if (l)
+        cameraY -= 0.1;
+    if (n)
+        cameraZ += 0.1;
+    if (m)
+        cameraZ -= 0.1;
+    if (u)
+        rotateCameraAboutObject(0.1);
+    if (i)
+        rotateCameraAboutObject(-0.1);
 }
 
 void tick_elements()
 {
     // ball1.tick();
-    if (ch == 1)
-        hex_di_pyrid1.tick();
-    if (ch == 2)
-        penta_anti_prism1.tick();
-    if (ch == 3)
-        elon_sq_pyrid1.tick();
+    shape1.tick();
     // camera_rotation_angle += 1;
 }
 
@@ -160,12 +176,7 @@ void initGL(GLFWwindow *window, int width, int height)
     /* Objects should be created before any other gl function and shaders */
     // Create the models
     // ball1 = Ball(0, 0, colorBuffer);
-    if (ch == 1)
-        hex_di_pyrid1 = Hex_Di_Pyrid(0, 0);
-    if (ch == 2)
-        penta_anti_prism1 = Penta_anti_Prism(0, 0);
-    if (ch == 3)
-        elon_sq_pyrid1 = Elon_Sq_Pyrid(0, 0);
+    shape1 = Shape(ch);
 
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders("../source/shaders/vert.glsl", "../source/shaders/frag.glsl");

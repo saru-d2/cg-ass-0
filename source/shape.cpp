@@ -1,7 +1,6 @@
 #include "shape.h"
 #include "main.h"
 #include <cmath>
-#include <stb_image.h>
 
 // float sqrt3by2 = sqrt(3) / 2.0;
 // float half = 0.5

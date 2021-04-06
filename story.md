@@ -1,0 +1,3 @@
+# story time
+
+Once upon a time, long long ago.. there was a prince named john who had a mystical object, that at the press of the button g cycled through a hexagonal di pyramid, a pentagonal antiprism and an elongated square dipyramid. the mage of his kingdom got to know of this and confiscated it. unfortunately for the mage, he was running windows and couldnt make his executable, and thus realizing that his life had amounted to nothing, proceeded to jump off the castle. John took his place smirking in the superiority of his operating system.

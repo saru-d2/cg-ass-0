@@ -17,6 +17,10 @@ const color_t COLOR_8 = {105, 159, 4};
 const color_t COLOR_9 = {96, 57, 116};
 const color_t COLOR_10 = {230, 23, 85};
 const color_t COLOR_11 = {43, 74, 90};
+const color_t COLOR_12 = {255, 74, 90};
+const color_t COLOR_13 = {43, 255, 90};
+const color_t COLOR_14 = {43, 74, 255};
+const color_t COLOR_15 = {255, 255, 90};
 
 const color_t COLOR_ARRAY[] = {
     COLOR_0,
@@ -31,6 +35,10 @@ const color_t COLOR_ARRAY[] = {
     COLOR_9,
     COLOR_10,
     COLOR_11,
+    COLOR_12,
+    COLOR_13,
+    COLOR_14,
+    COLOR_15,
 };
 
 Shape::Shape(int ch)
@@ -111,9 +119,9 @@ Shape::Shape(int ch)
             for (int j = 0; j < 3; j++)
             {
                 // for each pt
-                colorBuffer[9 * i + 3 * j + 0] = (float)COLOR_ARRAY[triangleList[i][j]].r / 255.0;
-                colorBuffer[9 * i + 3 * j + 1] = (float)COLOR_ARRAY[triangleList[i][j]].g / 255.0;
-                colorBuffer[9 * i + 3 * j + 2] = (float)COLOR_ARRAY[triangleList[i][j]].b / 255.0;
+                colorBuffer[9 * i + 3 * j + 0] = (float)COLOR_ARRAY[i].r / 255.0;
+                colorBuffer[9 * i + 3 * j + 1] = (float)COLOR_ARRAY[i].g / 255.0;
+                colorBuffer[9 * i + 3 * j + 2] = (float)COLOR_ARRAY[i].b / 255.0;
             }
         }
         this->object = create3DObject(GL_TRIANGLES, numTriangles * 3, vertex_buffer_data, colorBuffer, GL_FILL);
@@ -185,9 +193,9 @@ Shape::Shape(int ch)
             for (int j = 0; j < 3; j++)
             {
                 // for each pt
-                colorBuffer[9 * i + 3 * j + 0] = (float)COLOR_ARRAY[triangleList[i][j]].r / 255.0;
-                colorBuffer[9 * i + 3 * j + 1] = (float)COLOR_ARRAY[triangleList[i][j]].g / 255.0;
-                colorBuffer[9 * i + 3 * j + 2] = (float)COLOR_ARRAY[triangleList[i][j]].b / 255.0;
+                colorBuffer[9 * i + 3 * j + 0] = (float)COLOR_ARRAY[i].r / 255.0;
+                colorBuffer[9 * i + 3 * j + 1] = (float)COLOR_ARRAY[i].g / 255.0;
+                colorBuffer[9 * i + 3 * j + 2] = (float)COLOR_ARRAY[i].b / 255.0;
             }
         }
         this->object = create3DObject(GL_TRIANGLES, numTriangles * 3, vertex_buffer_data, colorBuffer, GL_FILL);
@@ -248,9 +256,9 @@ Shape::Shape(int ch)
             for (int j = 0; j < 3; j++)
             {
                 // for each pt
-                colorBuffer[9 * i + 3 * j + 0] = (float)COLOR_ARRAY[triangleList[i][j]].r / 255.0;
-                colorBuffer[9 * i + 3 * j + 1] = (float)COLOR_ARRAY[triangleList[i][j]].g / 255.0;
-                colorBuffer[9 * i + 3 * j + 2] = (float)COLOR_ARRAY[triangleList[i][j]].b / 255.0;
+                colorBuffer[9 * i + 3 * j + 0] = (float)COLOR_ARRAY[i].r / 255.0;
+                colorBuffer[9 * i + 3 * j + 1] = (float)COLOR_ARRAY[i].g / 255.0;
+                colorBuffer[9 * i + 3 * j + 2] = (float)COLOR_ARRAY[i].b / 255.0;
             }
         }
         this->object = create3DObject(GL_TRIANGLES, numTriangles * 3, vertex_buffer_data, colorBuffer, GL_FILL);

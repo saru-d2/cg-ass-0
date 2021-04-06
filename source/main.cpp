@@ -1,8 +1,6 @@
 #include "main.h"
 #include "timer.h"
-// #include "hex_di_pyrid.h"
-// #include "penta_anti_prism.h"
-// #include "elon_sq_pyrid.h"
+
 #include "shape.h"
 
 using namespace std;
@@ -19,6 +17,8 @@ float cameraLookX = 5;
 float cameraLookY = 0;
 float cameraLookZ = 0;
 glm::vec3 cameraUp(0, 1, 0);
+
+// bool changeShape = false;
 
 int ch;
 /**************************
@@ -49,8 +49,32 @@ void rotateCameraAboutObject(float rotatAdd)
     cameraLookZ = shape1.posZ - cameraZ;
     // std::cout << currAngle << ',' << std::endl;
 
-    std::cout << cameraLookX << "," << cameraLookY << "," << cameraLookZ << std::endl;
-    std::cout << cameraX << "," << cameraY << "," << cameraZ << std::endl;
+    // std::cout << cameraLookX << "," << cameraLookY << "," << cameraLookZ << std::endl;
+    // std::cout << cameraX << "," << cameraY << "," << cameraZ << std::endl;
+}
+
+void teleport_camera(int ch)
+{
+    cameraX = 0;
+    cameraY = 0;
+    cameraZ = 0;
+    if (ch == 0)
+        cameraX = 5;
+    if (ch == 1)
+        cameraX = -5;
+        cameraZ = -5;
+    if (ch == 2)
+        cameraZ = 5;
+    // std::cout << cameraX << "," << cameraY << "," << cameraZ << " " << cameraLookX << "," << cameraLookY << "," << cameraLookZ << " "<<shape1.posX<<","<<shape1.posY<<","<<shape1.posZ<<std::endl;
+    cameraLookX = shape1.posX - cameraX;
+    cameraLookY = shape1.posY - cameraY;
+    cameraLookZ = shape1.posZ - cameraZ;
+}
+
+void genNextShape(){
+    ch++;
+    if (ch == 4) ch = 1;
+    shape1 = Shape(ch);
 }
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
@@ -119,6 +143,11 @@ void tick_input(GLFWwindow *window)
     int m = glfwGetKey(window, GLFW_KEY_M);
     int u = glfwGetKey(window, GLFW_KEY_U);
     int i = glfwGetKey(window, GLFW_KEY_I);
+    int x = glfwGetKey(window, GLFW_KEY_X);
+    int c = glfwGetKey(window, GLFW_KEY_C);
+    int v = glfwGetKey(window, GLFW_KEY_V);
+    // int g = glfwGetKey(window, GLFW_KEY_G);
+    
 
     if (left)
         shape1.rotatX += 1;
@@ -160,6 +189,15 @@ void tick_input(GLFWwindow *window)
         rotateCameraAboutObject(0.1);
     if (i)
         rotateCameraAboutObject(-0.1);
+    if (x)
+        teleport_camera(0);
+    if (c)
+        teleport_camera(1);
+    if (v)
+        teleport_camera(2);
+    if (changeShape)
+        genNextShape();
+        changeShape = false;
 }
 
 void tick_elements()

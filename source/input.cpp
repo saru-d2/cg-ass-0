@@ -10,12 +10,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
 #include "main.h"
+
 
 bool   cannon_keyboard_input = true;
 bool   drag_pan = false, old_cki;
 double drag_oldx = -1, drag_oldy = -1;
+
+bool changeShape = false;
 
 using namespace std;
 
@@ -57,6 +59,9 @@ void keyboardChar(GLFWwindow *window, unsigned int key) {
     case 'q':
         quit(window);
         break;
+    case 'g':
+        changeShape = true;
+    
     default:
         break;
     }

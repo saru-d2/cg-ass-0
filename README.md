@@ -1,5 +1,8 @@
 # cg-ass-0
 
+## a hello world to computer graphics and the openGL pipeline
+
+
 Question - to model 3 basic shapes
 
 to run:
